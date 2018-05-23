@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  isRecipeTitle = true;
+
+  displayNavHeader($event: { navHeader: string }) {
+    if ($event.navHeader === 'Recipes') {
+      this.isRecipeTitle = true;
+    } else {
+      this.isRecipeTitle = false;
+    }
+  }
 }
