@@ -1,27 +1,26 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {Recipe} from '../recipe.model';
-import {RecursiveAngularExpressionVisitor} from 'codelyzer/angular/templates/recursiveAngularExpressionVisitor';
+import {RecipeService} from '../recipe.service';
+import {ActivatedRoute, Router, Routes} from '@angular/router';
 
 @Component({
   selector: 'app-recipe-list',
   templateUrl: './recipe-list.component.html',
-  styleUrls: ['./recipe-list.component.css']
+  styleUrls: ['./recipe-list.component.css'],
 })
+
 export class RecipeListComponent implements OnInit {
+  recipes: Recipe[];
 
-  @Output() recipeWasSelected = new EventEmitter<Recipe>();
+  constructor(private recipeService: RecipeService,
+              private route: Router,
+              private activatedRoute: ActivatedRoute) { }
 
-  receipes: Recipe[] = [  new Recipe('A Test Recipe',
-    'This is simple a test',
-    'https://www.bbcgoodfood.com/sites/default/files/styles/recipe/public/recipe_images/recipe-image-legacy-id--488691_11.jpg?itok=ExaTspz1'),
-    new Recipe('A Test Recipe 2',
-      'This is a second test',
-      'https://haacked.com/images/haacked_com/WindowsLiveWriter/Writing-a-Recipe-in-ASP.NET-MVC-4_1246F/recipe_2.jpg')];
-  constructor() { }
+  ngOnInit() {
+    this.recipes = this.recipeService.getRecipes();
+  }
 
-  ngOnInit() { }
-
-  onRecipeSelected(recipe: Recipe) {
-    this.recipeWasSelected.emit(recipe);
+  onNewRecipe() {
+    this.route.navigate(['new'], { relativeTo: this.activatedRoute });
   }
 }
